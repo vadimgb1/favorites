@@ -1,3 +1,4 @@
+//Вывод названий шоу
 const fs = require('fs')
 const csv = require('csv-parser')
 
