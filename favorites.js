@@ -1,6 +1,17 @@
-const	fs = require('fs'),
-		csv = require('csv-parser')
+const fs = require('fs')
+const csv = require('csv-parser')
 
-const fStream = fs.createReadStream('favorites.csv')	//поток считывает файл
-const csvStream = csv().on('data', data=>{console.log(data['название'])})
-fStream.pipe(csvStream)//Данные из первого потока направляем во второй
+const fStream = fs.createReadStream('favorites.csv')
+const csvStream = csv()
+
+csvStream.on('data', data =>
+{
+    console.log(data['название'])
+})
+
+csvStream.on('end', ()=>
+{
+    console.log("It is end.")
+})
+
+fStream.pipe(csvStream)

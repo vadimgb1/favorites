@@ -1,13 +1,11 @@
-const	fs = require('fs'),
-		csv = require('csv-parser')
-
+const fs = require('fs')
+const csv = require('csv-parser')
 let names = {}
 
-const fStream = fs.createReadStream('favorites.csv')	//поток считывает файл
-
+const fStream = fs.createReadStream('favorites.csv')
 const csvStream = csv()
 
-csvStream.on('data', data=>
+csvStream.on('data', data =>
 {
     const name = data['название'].toLowerCase().trim()
     if(names[name])
@@ -16,14 +14,13 @@ csvStream.on('data', data=>
         names[name] = 1
 })
 
-
 csvStream.on('end', ()=>
-	{
-		names = Object.keys(names).sort((a,b) => names[a] - names[b]).reverse()
-			.reduce((a, v) => {a[v] = names[v]; return a;}, {})
+{
+    let namesKeys = Object.keys(names)
+    .sort((a, b) => names[a] - names[b]).reverse()
 
-	    console.table(names)
+    for(let name of namesKeys)
+        console.log(`${name}: ${names[name]}`)
+})
 
-	})
-
-fStream.pipe(csvStream)//Данные из первого потока направляем во второй
+fStream.pipe(csvStream)
